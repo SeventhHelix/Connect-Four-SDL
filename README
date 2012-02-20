@@ -1,0 +1,17 @@
+To compile: 
+    $ make
+
+You will need the SDL library to compile this program
+Instructions on how to get SDL can be found here: http://lazyfoo.net/SDL_tutorials/lesson01/index.php
+
+Accepted command flags:
+    -text       Run the game in a 'wonderfully aesthetically pleasing' text-only mode
+
+Controls:
+    Graphical version:
+        Left/Right          Move piece left and right
+        Spacebar            Drop piece
+
+    Text version:
+        l/r                 Move piece left and right
+        d                   Drop piece

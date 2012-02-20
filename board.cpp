@@ -60,6 +60,7 @@ Board::~Board() {
  * Prints the board to stdout
  */
 void Board::printBoard() {
+    std::cout << "Current player: " << curPlayer << std::endl << std::endl;
     for (int i = 0; i < height; i++) {
         std::cout << "|";
         for (int j = 0; j < width; j++) {
