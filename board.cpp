@@ -13,6 +13,7 @@
 //#include "piece.h"
 #include "board.h"
 #include <iostream>
+#include <cstdio>
 
 Board::Board(int numPlayers, int width, int height, int numToWin) {
     this->numPlayers = numPlayers;
@@ -142,9 +143,10 @@ void Board::iteratePlayer() {
 
 
 bool Board::wonGame() {
+    try {
     int inARow = 1;
     int x = curPieceCol;
-    int y = colHeights[curPieceCol] - 1;
+    int y = height - colHeights[curPieceCol] ;
 
     int workX = x;
     int workY = y;
@@ -154,14 +156,15 @@ bool Board::wonGame() {
         workX = x-1;
 
         // Left
-        while (workX >= 0 && grid[workX][workY] == curPieceType) {
+        while (workX >= 0 && grid[workY][workX] == curPieceType) {
             workX--;
             inARow++;
         }
 
         // Right
         workX = x+1;
-        while (workX < width && grid[workX][workY] == curPieceType) {
+
+        while (workX < width && grid[workY][workX] == curPieceType) {
             workX++;
             inARow++;
         }
@@ -174,8 +177,8 @@ bool Board::wonGame() {
         inARow = 1;
 
         // Down
-        while (workY >= 0 && grid[workX][workY] == curPieceType) {
-            workY--;
+        while (workY < height-1 && grid[workY][workX] == curPieceType) {
+            workY++;
             inARow++;
         }
 
@@ -184,23 +187,29 @@ bool Board::wonGame() {
     // Check bottom-left/top-right diagonal pieces
         inARow = 1;
         workX = x-1;
-        workY = y-1;
+        workY = y+1;
 
         // Left
-        while (workX >= 0 && workY >= 0 && grid[workX][workY] == curPieceType) {
+        printf("workX: %d\n", workX);
+        printf("workY: %d\n", workY);
+        printf("height-1: %d\n", height-1);
+        //printf("grid:: %c\n", grid[workY]);
+        while (workX >= 0 && workY < height && grid[workY][workX] == curPieceType) {
             workX--;
-            workY--;
+            workY++;
             inARow++;
+            std::cout << "inARow: " << inARow << std::endl;
         }
         workX = x+1;
-        workY = y+1;
+        workY = y-1;
 
 
         // Right
-        while (workX < width && workY < height-1 && grid[workX][workY] == curPieceType) {
+        while (workX < width && workY >= 0 && grid[workY][workX] == curPieceType) {
             workX++;
-            workY++;
+            workY--;
             inARow++;
+            std::cout << "inARow2: " << inARow << std::endl;
         }
 
         if (inARow >= numToWin) return true;
@@ -208,26 +217,29 @@ bool Board::wonGame() {
     // Check top-left/bottom-right diagonal pieces
         inARow = 1;
         workX = x-1;
-        workY = y+1;
+        workY = y-1;
 
         // Left
-        while (workX >= 0 && workY < height-1 && grid[workX][workY] == curPieceType) {
+        while (workX >= 0 && workY >= 0 && grid[workY][workX] == curPieceType) {
             workX--;
-            workY++;
+            workY--;
             inARow++;
         }
         workX = x+1;
-        workY = y-1;
+        workY = y+1;
 
         // Right
-        while (workX < width && workY >= 0 && grid[workX][workY] == curPieceType) {
+        while (workX < width && workY < height && grid[workY][workX] == curPieceType) {
             workX++;
-            workY--;
+            workY++;
             inARow++;
         }
 
         if (inARow >= numToWin) return true;
 
+    } catch(...) {
+        std::cerr << "Problem in gameWon function. Fix pl0x" << std::endl;
+    }
 
 
     // inARow never == numToWin, did not win
@@ -235,6 +247,10 @@ bool Board::wonGame() {
 }
 
 
+/*
+ * Returns the current player
+ * This is only called when the game is won, hence the name
+ */
 int Board::winningPlayer() {
     return curPlayer;
 }
