@@ -13,30 +13,39 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-//#include "piece.h"
 #include <iostream>
+#include <vector>
 
 class Board {
-    //Piece ***pieces;
-    //Piece *activePiece;
-
     char **grid;
 
-    int width, height;
+    int width, height; 
+    int numPlayers;
+    int numToWin;
+    int curPlayer;
+    int curPieceCol;
+    char curPieceType;
+
+    std::vector<int> colHeights;
 
     bool checkWin();
-    
-    public:
-        void moveLeft();
-        void moveRight();
-        void dropPiece();
+    void setPiece(int col, char pieceType);
+    bool canDrop(int col);
 
-        bool canMove();
+    public:
+        void movePiece(int dir);
+        bool dropPiece();
+
+        bool canPlay();
+        bool canDrop();
+
+        void iteratePlayer();
+
         void printBoard();
 
-        Board(int width, int height, int numToWin);
+        Board(int numPlayers, int width, int height, int numToWin);
         ~Board();
-    
+
 };
 
 

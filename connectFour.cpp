@@ -19,7 +19,9 @@ using namespace std;
 
 int main() {
     Interpreter *intrp = new Interpreter;
-    intrp->printGame();
+    //intrp->printGame();
+
+    delete intrp;
 
 
     return 0;
