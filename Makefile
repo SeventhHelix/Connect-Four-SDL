@@ -1,7 +1,7 @@
 CXX = g++
-CXXFLAGS = -Wall -MMD
+CXXFLAGS = -Wall -MMD -lSDL
 EXEC = connectFour
-OBJECTS = connectFour.o board.o piece.o interpreter.o
+OBJECTS = connectFour.o board.o interpreter.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

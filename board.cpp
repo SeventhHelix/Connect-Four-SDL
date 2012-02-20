@@ -190,15 +190,10 @@ bool Board::wonGame() {
         workY = y+1;
 
         // Left
-        printf("workX: %d\n", workX);
-        printf("workY: %d\n", workY);
-        printf("height-1: %d\n", height-1);
-        //printf("grid:: %c\n", grid[workY]);
         while (workX >= 0 && workY < height && grid[workY][workX] == curPieceType) {
             workX--;
             workY++;
             inARow++;
-            std::cout << "inARow: " << inARow << std::endl;
         }
         workX = x+1;
         workY = y-1;
@@ -209,7 +204,6 @@ bool Board::wonGame() {
             workX++;
             workY--;
             inARow++;
-            std::cout << "inARow2: " << inARow << std::endl;
         }
 
         if (inARow >= numToWin) return true;
