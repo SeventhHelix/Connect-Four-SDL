@@ -10,10 +10,36 @@
  * =====================================================================================
  */
 
+#include "SDL/SDL.h"
 #include "interpreter.h"
 #include <iostream>
 
 Interpreter::Interpreter() {
+
+    int numPlayers = 2;
+    int width = 7;
+    int height = 6;
+
+    SDL_Surface *gameSpecsWindow = NULL;
+
+    SDL_Init(SDL_INIT_EVERYTHING);
+
+    gameSpecsWindow = SDL_SetVideoMode(640, 300, 32, SDL_SWSURFACE);
+
+
+
+
+    SDL_FreeSurface(gameSpecsWindow);
+    SDL_Quit();
+    
+
+
+
+
+
+
+
+    /* 
     int width, height, toWin, numPlayers;
     std::cout << "Instructions: r->right, l->left, d->drop" << std::endl;
     std::cout << "Enter the number of players: ";
@@ -54,6 +80,8 @@ Interpreter::Interpreter() {
     } else {
         std::cout << "Well that was boring. Nobody won the game." << std::endl;
     }
+
+    */
 
 }
 

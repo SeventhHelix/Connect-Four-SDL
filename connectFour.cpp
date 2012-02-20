@@ -17,7 +17,7 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char* args[]) {
     Interpreter *intrp = new Interpreter;
     //intrp->printGame();
 
