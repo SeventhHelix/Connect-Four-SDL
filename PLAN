@@ -1,0 +1,15 @@
+Board:
+    piece pieces***
+    piece activePiece*
+
+    private:
+        checkWin()
+        print()
+
+    public:
+        moveLeft()
+        moveRight()
+        drop()
+
+
+
