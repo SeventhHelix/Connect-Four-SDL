@@ -28,7 +28,6 @@ class Board {
 
     std::vector<int> colHeights;
 
-    bool checkWin();
     void setPiece(int col, char pieceType);
     bool canDrop(int col);
 
@@ -37,7 +36,8 @@ class Board {
         bool dropPiece();
 
         bool canPlay();
-        bool canDrop();
+        bool wonGame();
+        int winningPlayer();
 
         void iteratePlayer();
 

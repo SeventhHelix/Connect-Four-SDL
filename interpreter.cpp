@@ -29,8 +29,9 @@ Interpreter::Interpreter() {
     printGame();
 
     char exec;
+    bool gameWon = false;
 
-    while (game->canPlay()) {
+    while (game->canPlay() && ! gameWon) {
         std::cin >> exec;
         switch(exec) {
             case 'l':
@@ -39,12 +40,19 @@ Interpreter::Interpreter() {
                 game->movePiece(1); break;
             case 'd':
                 if (game->dropPiece()) {
-                    game->iteratePlayer();
+                    if (game->wonGame()) gameWon = true;
+                    else game->iteratePlayer();
                 }
                 break;
         }
 
         printGame();
+    }
+
+    if (gameWon) {
+        std::cout << "Player " << game->winningPlayer() << " wins!" << std::endl;
+    } else {
+        std::cout << "Well that was boring. Nobody won the game." << std::endl;
     }
 
 }

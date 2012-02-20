@@ -85,12 +85,6 @@ bool Board::canPlay() {
     return false;
 }
 
-/*
- * Returns true if the current column can accept another piece
-bool Board::canDrop() {
-    return (colHeights[curPieceCol] < height-1);
-}
- */
 
 /*
  * Returns true if the specified column can accept another piece
@@ -128,9 +122,10 @@ bool Board::dropPiece() {
     if (canDrop(curPieceCol)) {
         grid[0][curPieceCol] = ' ';
         setPiece(curPieceCol, curPieceType); 
-        curPieceCol = 0;
         return true;
     }
+
+    return false;
 
 }
 
@@ -138,6 +133,7 @@ void Board::iteratePlayer() {
     if (curPlayer == numPlayers) curPlayer = 1;
     else curPlayer++;
 
+    curPieceCol = 0;
     curPieceType = curPlayer+64;
 
     grid[0][0] = curPieceType;
@@ -145,7 +141,103 @@ void Board::iteratePlayer() {
 }
 
 
+bool Board::wonGame() {
+    int inARow = 1;
+    int x = curPieceCol;
+    int y = colHeights[curPieceCol] - 1;
 
+    int workX = x;
+    int workY = y;
+
+    // Check left/right pieces
+
+        workX = x-1;
+
+        // Left
+        while (workX >= 0 && grid[workX][workY] == curPieceType) {
+            workX--;
+            inARow++;
+        }
+
+        // Right
+        workX = x+1;
+        while (workX < width && grid[workX][workY] == curPieceType) {
+            workX++;
+            inARow++;
+        }
+
+        if (inARow >= numToWin) return true;
+
+    // Check pieces below
+        workX = x;
+        workY = y;
+        inARow = 1;
+
+        // Down
+        while (workY >= 0 && grid[workX][workY] == curPieceType) {
+            workY--;
+            inARow++;
+        }
+
+        if (inARow >= numToWin) return true;
+
+    // Check bottom-left/top-right diagonal pieces
+        inARow = 1;
+        workX = x-1;
+        workY = y-1;
+
+        // Left
+        while (workX >= 0 && workY >= 0 && grid[workX][workY] == curPieceType) {
+            workX--;
+            workY--;
+            inARow++;
+        }
+        workX = x+1;
+        workY = y+1;
+
+
+        // Right
+        while (workX < width && workY < height-1 && grid[workX][workY] == curPieceType) {
+            workX++;
+            workY++;
+            inARow++;
+        }
+
+        if (inARow >= numToWin) return true;
+
+    // Check top-left/bottom-right diagonal pieces
+        inARow = 1;
+        workX = x-1;
+        workY = y+1;
+
+        // Left
+        while (workX >= 0 && workY < height-1 && grid[workX][workY] == curPieceType) {
+            workX--;
+            workY++;
+            inARow++;
+        }
+        workX = x+1;
+        workY = y-1;
+
+        // Right
+        while (workX < width && workY >= 0 && grid[workX][workY] == curPieceType) {
+            workX++;
+            workY--;
+            inARow++;
+        }
+
+        if (inARow >= numToWin) return true;
+
+
+
+    // inARow never == numToWin, did not win
+    return false;
+}
+
+
+int Board::winningPlayer() {
+    return curPlayer;
+}
 
 
 
