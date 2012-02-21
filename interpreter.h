@@ -24,11 +24,17 @@ class Interpreter {
 
     SDL_Surface *screen;
     SDL_Surface *whiteSquare;
-    SDL_Surface *blueSquare;
-    SDL_Surface *redCircle;
-    SDL_Surface *purpleCircle;
-    SDL_Surface *greenCircle;
-    SDL_Surface *yellowCircle;
+    SDL_Surface *whiteCircle;
+    SDL_Surface *blueSquareW;
+    SDL_Surface *blueSquareB;
+    SDL_Surface *redCircleW;
+    SDL_Surface *redCircleB;
+    SDL_Surface *purpleCircleW;
+    SDL_Surface *purpleCircleB;
+    SDL_Surface *greenCircleW;
+    SDL_Surface *greenCircleB;
+    SDL_Surface *yellowCircleW;
+    SDL_Surface *yellowCircleB;
 
     public:
         void movePiece(char dir);
@@ -42,7 +48,7 @@ class Interpreter {
         void printGame();
 
         SDL_Surface *loadImage(std::string filename);
-        void applySurface(int x, int y, SDL_Surface *source, SDL_Surface *destiny);
+        void applySurface(int x, int y, SDL_Surface *source, SDL_Surface *destination);
         void applyTile(char tile, int x, int y);
 
 };

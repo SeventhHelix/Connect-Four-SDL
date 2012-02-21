@@ -17,6 +17,8 @@
 #include "interpreter.h"
 #include "SDL/SDL.h"
 
+#define TEXTSUPRESS
+
 class Interpreter;
 
 Board::Board(int numPlayers, int width, int height, int numToWin, Interpreter *intrp) {
@@ -66,33 +68,54 @@ Board::~Board() {
  * Prints the board to stdout
  */
 void Board::printBoard() {
+#ifndef TEXTSUPRESS
     std::cout << "Current player: " << curPlayer << std::endl << std::endl;
+#endif
 
     // Prints the top row - special applyTile call to print whiteRectangles
+#ifndef TEXTSUPRESS
     std::cout << '|';
+#endif
     for (int j = 0; j < width; j++) {
+#ifndef TEXTSUPRESS
         std::cout << grid[0][j];
-        intrp->applyTile('-', j, 0);
+#endif
+
         if (grid[0][j] != ' ') {
-            intrp->applyTile(grid[0][j], j, 0);
+            // Pass the lowercase version of the character (A -> a)
+            intrp->applyTile(grid[0][j]+32, j, 0);
+        } else {
+            intrp->applyTile('-', j, 0);
         }
     }
-
+#ifndef TEXTSUPRESS
     std::cout << '|' << std::endl;
+#endif
 
     // Prints the actual grid itself, not including the top space
     for (int i = 1; i < height; i++) {
+#ifndef TEXTSUPRESS
         std::cout << "|";
+#endif
         for (int j = 0; j < width; j++) {
+#ifndef TEXTSUPRESS
             std::cout << grid[i][j];
+#endif
             intrp->applyTile(grid[i][j], j, i);
         }
+#ifndef TEXTSUPRESS
         std::cout << "|" << std::endl;
+#endif
     }
     for (int i = 0; i < width+2; i++) {
+#ifndef TEXTSUPRESS
         std::cout << "-";
+#endif
     }
+#ifndef TEXTSUPRESS
     std::cout << std::endl;
+#endif
+
 }
 
 /*
@@ -164,14 +187,14 @@ void Board::iteratePlayer() {
 
 bool Board::wonGame() {
     try {
-    int inARow = 1;
-    int x = curPieceCol;
-    int y = height - colHeights[curPieceCol] ;
+        int inARow = 1;
+        int x = curPieceCol;
+        int y = height - colHeights[curPieceCol] ;
 
-    int workX = x;
-    int workY = y;
+        int workX = x;
+        int workY = y;
 
-    // Check left/right pieces
+        // Check left/right pieces
 
         workX = x-1;
 
@@ -191,7 +214,7 @@ bool Board::wonGame() {
 
         if (inARow >= numToWin) return true;
 
-    // Check pieces below
+        // Check pieces below
         workX = x;
         workY = y;
         inARow = 1;
@@ -204,7 +227,7 @@ bool Board::wonGame() {
 
         if (inARow >= numToWin) return true;
 
-    // Check bottom-left/top-right diagonal pieces
+        // Check bottom-left/top-right diagonal pieces
         inARow = 1;
         workX = x-1;
         workY = y+1;
@@ -228,7 +251,7 @@ bool Board::wonGame() {
 
         if (inARow >= numToWin) return true;
 
-    // Check top-left/bottom-right diagonal pieces
+        // Check top-left/bottom-right diagonal pieces
         inARow = 1;
         workX = x-1;
         workY = y-1;

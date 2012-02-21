@@ -21,22 +21,21 @@ Interpreter::Interpreter() {
 
     SCREEN_BPP = 32;
 
-    screen = NULL;
-    whiteSquare = NULL;
-    blueSquare = NULL;
-    redCircle = NULL;
-    purpleCircle = NULL;
-    greenCircle = NULL;
-    yellowCircle = NULL;
-
     SDL_Init(SDL_INIT_EVERYTHING);
 
-    whiteSquare = loadImage("images/whiteSquare.bmp");
-    blueSquare = loadImage("images/blueSquare.bmp");
-    redCircle = loadImage("images/redCircle.bmp");
-    purpleCircle = loadImage("images/purpleCircle.bmp");
-    greenCircle = loadImage("images/greenCircle.bmp");
-    yellowCircle = loadImage("images/yellowCircle.bmp");
+    whiteSquare = SDL_LoadBMP("images/whiteSquare.bmp");
+    whiteCircle = SDL_LoadBMP("images/whiteCircleBlue.bmp");
+    blueSquareW = SDL_LoadBMP("images/blueSquareWhite.bmp");
+    blueSquareB = SDL_LoadBMP("images/blueSquareBlue.bmp");
+    redCircleW = SDL_LoadBMP("images/redCircleWhite.bmp");
+    redCircleB = SDL_LoadBMP("images/redCircleBlue.bmp");
+    purpleCircleW = SDL_LoadBMP("images/purpleCircleWhite.bmp");
+    purpleCircleB = SDL_LoadBMP("images/purpleCircleBlue.bmp");
+    greenCircleW = SDL_LoadBMP("images/greenCircleWhite.bmp");
+    greenCircleB = SDL_LoadBMP("images/greenCircleBlue.bmp");
+    yellowCircleW = SDL_LoadBMP("images/yellowCircleWhite.bmp");
+    yellowCircleB = SDL_LoadBMP("images/yellowCircleBlue.bmp");
+
 
     std::cout << "Enter the number of players (1-4): ";
     std::cin >> numPlayers;
@@ -57,6 +56,7 @@ Interpreter::Interpreter() {
     game = new Board(numPlayers, width, height, toWin, this);
 
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+
     SDL_WM_SetCaption("Connect-Four", NULL);
 
     printGame();
@@ -68,26 +68,64 @@ Interpreter::Interpreter() {
 void Interpreter::startGame() {
     char exec;
     bool gameWon = false;
+    bool quit = false;
+    SDL_Event event;
 
-    while (game->canPlay() && ! gameWon && exec != 'q') {
-        std::cin >> exec;
-        switch(exec) {
-            case 'l':
-                game->movePiece(-1); break;
-            case 'r':
-                game->movePiece(1); break;
-            case 'd':
-                if (game->dropPiece()) {
-                    if (game->wonGame()) gameWon = true;
-                    else game->iteratePlayer();
-                }
-                break;
+    while (quit == false && game->canPlay() && ! gameWon) {
+        if (SDL_PollEvent(&event)) {
+            //std::cout << "event found: " << event.type << std::endl;
+            switch(event.type) {
+                case SDL_QUIT:
+                    //std::cout << "event quit" << std::endl;
+                    quit = true;
+                    break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym) {
+                        case SDLK_LEFT:
+                            game->movePiece(-1);
+                            break;
+
+                        case SDLK_RIGHT:
+                            game->movePiece(1);
+                            break;
+
+                        case SDLK_SPACE:
+                        case SDLK_DOWN:
+                            if (game->dropPiece()) {
+                                if (game->wonGame()) gameWon = true;
+                                else game->iteratePlayer();
+                            }
+                            break;
+                    }
+                    printGame();
+            }
+
+
         }
-
-        printGame();
     }
 
-    if (gameWon) {
+    /*
+       std::cin >> exec;
+       switch(exec) {
+       case 'l':
+       game->movePiece(-1); break;
+       case 'r':
+       game->movePiece(1); break;
+       case 'd':
+       if (game->dropPiece()) {
+       if (game->wonGame()) gameWon = true;
+       else game->iteratePlayer();
+       }
+       break;
+       case 'q':
+       quit = true;
+       break;
+       }
+
+       printGame();
+       */
+
+    if (gameWon == true) {
         std::cout << "Player " << game->winningPlayer() << " wins!" << std::endl;
     } else {
         std::cout << "Well that was boring. Nobody won the game." << std::endl;
@@ -109,6 +147,7 @@ Interpreter::~Interpreter() {
  */
 void Interpreter::printGame() {
     game->printBoard();
+    SDL_Flip(screen);
 }
 
 /*
@@ -123,7 +162,10 @@ SDL_Surface* Interpreter::loadImage(std::string filename) {
     loadedImage = SDL_LoadBMP(filename.c_str());
 
     if (loadedImage != NULL) {
-        optimizedImage = SDL_DisplayFormat(loadedImage);
+        // This line causes problems for some reason
+        // Defeats the whole purpose of this function
+        //optimizedImage = SDL_DisplayFormat(loadedImage);
+        optimizedImage = loadedImage;
         SDL_FreeSurface(loadedImage);
     }
 
@@ -145,31 +187,46 @@ void Interpreter::applySurface(int x, int y, SDL_Surface *source, SDL_Surface *d
 /*
  * Prints a tile to the game screen
  */
-void Interpreter::applyTile(char tile, int x, int y) {
+void Interpreter::applyTile(char tile, int xSmall, int ySmall) {
     //std::cout << "Attempting to place " << tile << " at ("<<x<<","<<y<<")" << std::endl;
+    int x = xSmall*64;
+    int y = ySmall*64;
     switch(tile) {
         case '-':
             applySurface(x, y, whiteSquare, screen);
             break;
         case ' ':
-            applySurface(x, y, blueSquare, screen);
+            applySurface(x, y, whiteCircle, screen);
             break;
+
         case 'A':
-            applySurface(x, y, blueSquare, screen);
-            applySurface(x, y, redCircle, screen);
+            applySurface(x, y, redCircleB, screen);
             break;
+        case 'a':
+            applySurface(x, y, redCircleW, screen);
+            break;
+
         case 'B':
-            applySurface(x, y, blueSquare, screen);
-            applySurface(x, y, greenCircle, screen);
+            applySurface(x, y, greenCircleB, screen);
             break;
+        case 'b':
+            applySurface(x, y, greenCircleW, screen);
+            break;
+
         case 'C':
-            applySurface(x, y, blueSquare, screen);
-            applySurface(x, y, purpleCircle, screen);
+            applySurface(x, y, purpleCircleB, screen);
             break;
+        case 'c':
+            applySurface(x, y, purpleCircleW, screen);
+            break;
+
         case 'D':
-            applySurface(x, y, blueSquare, screen);
-            applySurface(x, y, yellowCircle, screen);
+            applySurface(x, y, yellowCircleB, screen);
+            break;
+        case 'd':
+            applySurface(x, y, yellowCircleW, screen);
             break;
 
     }
 }
+

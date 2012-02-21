@@ -14,6 +14,7 @@
 //#include "piece.h"
 #include "board.h"
 #include "interpreter.h"
+#include "SDL/SDL.h"
 
 using namespace std;
 
