@@ -71,8 +71,8 @@ void Interpreter::startGame() {
     bool quit = false;
     SDL_Event event;
 
-    while (quit == false && game->canPlay() && ! gameWon) {
-        if (SDL_PollEvent(&event)) {
+    while (quit == false ) {
+        if (SDL_PollEvent(&event) && game->canPlay() && ! gameWon) {
             //std::cout << "event found: " << event.type << std::endl;
             switch(event.type) {
                 case SDL_QUIT:
@@ -100,7 +100,12 @@ void Interpreter::startGame() {
                     printGame();
             }
 
-
+        } else {
+            if (gameWon == true) {
+                SDL_WM_SetCaption("Connect-Four: Player " + game->winningPlayer + " won!", NULL);
+            } else {
+                SDL_WM_SetCaption("Connect-Four: Tie game", NULL);
+            }
         }
     }
 
