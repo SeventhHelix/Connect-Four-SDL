@@ -43,15 +43,16 @@ Interpreter::Interpreter() {
 
     std::cout << "Enter the dimensions of the board: " << std::endl;
     std::cout << "Width: ";
-    std::cin >> SCREEN_WIDTH;
-    SCREEN_WIDTH *= 64;
+    std::cin >> width;
+    SCREEN_WIDTH = width*64;
 
     std::cout << "Height: ";
-    std::cin >> SCREEN_HEIGHT;
-    SCREEN_HEIGHT = 64 + SCREEN_HEIGHT*64;
+    std::cin >> height;
+    SCREEN_HEIGHT = 64 + height*64;
 
     std::cout << "Number in a row to win: ";
     std::cin >> toWin;
+
 
     game = new Board(numPlayers, width, height, toWin, this);
 
@@ -68,7 +69,7 @@ void Interpreter::startGame() {
     char exec;
     bool gameWon = false;
 
-    while (game->canPlay() && ! gameWon) {
+    while (game->canPlay() && ! gameWon && exec != 'q') {
         std::cin >> exec;
         switch(exec) {
             case 'l':
@@ -145,6 +146,7 @@ void Interpreter::applySurface(int x, int y, SDL_Surface *source, SDL_Surface *d
  * Prints a tile to the game screen
  */
 void Interpreter::applyTile(char tile, int x, int y) {
+    //std::cout << "Attempting to place " << tile << " at ("<<x<<","<<y<<")" << std::endl;
     switch(tile) {
         case '-':
             applySurface(x, y, whiteSquare, screen);

@@ -69,6 +69,7 @@ void Board::printBoard() {
     std::cout << "Current player: " << curPlayer << std::endl << std::endl;
 
     // Prints the top row - special applyTile call to print whiteRectangles
+    std::cout << '|';
     for (int j = 0; j < width; j++) {
         std::cout << grid[0][j];
         intrp->applyTile('-', j, 0);
@@ -76,6 +77,8 @@ void Board::printBoard() {
             intrp->applyTile(grid[0][j], j, 0);
         }
     }
+
+    std::cout << '|' << std::endl;
 
     // Prints the actual grid itself, not including the top space
     for (int i = 1; i < height; i++) {
