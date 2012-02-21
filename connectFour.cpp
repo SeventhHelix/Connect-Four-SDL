@@ -18,8 +18,10 @@
 using namespace std;
 
 int main(int argc, char* args[]) {
+
     Interpreter *intrp = new Interpreter;
-    //intrp->printGame();
+
+    intrp->startGame();
 
     delete intrp;
 

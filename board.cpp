@@ -14,8 +14,12 @@
 #include "board.h"
 #include <iostream>
 #include <cstdio>
+#include "interpreter.h"
+#include "SDL/SDL.h"
 
-Board::Board(int numPlayers, int width, int height, int numToWin) {
+class Interpreter;
+
+Board::Board(int numPlayers, int width, int height, int numToWin, Interpreter *intrp) {
     this->numPlayers = numPlayers;
     this->width = width;
     this->height = height + 1;  // +1 to account for top row to move piece
@@ -24,6 +28,7 @@ Board::Board(int numPlayers, int width, int height, int numToWin) {
     this->curPlayer = 1;
     this->curPieceCol = 0;
     this->curPieceType = curPlayer + 64;
+    this->intrp = intrp;
     
     for (int i = 0; i < this->height; i++) {
         this->grid[i] = new char[this->width];
@@ -62,10 +67,22 @@ Board::~Board() {
  */
 void Board::printBoard() {
     std::cout << "Current player: " << curPlayer << std::endl << std::endl;
-    for (int i = 0; i < height; i++) {
+
+    // Prints the top row - special applyTile call to print whiteRectangles
+    for (int j = 0; j < width; j++) {
+        std::cout << grid[0][j];
+        intrp->applyTile('-', j, 0);
+        if (grid[0][j] != ' ') {
+            intrp->applyTile(grid[0][j], j, 0);
+        }
+    }
+
+    // Prints the actual grid itself, not including the top space
+    for (int i = 1; i < height; i++) {
         std::cout << "|";
         for (int j = 0; j < width; j++) {
             std::cout << grid[i][j];
+            intrp->applyTile(grid[i][j], j, i);
         }
         std::cout << "|" << std::endl;
     }

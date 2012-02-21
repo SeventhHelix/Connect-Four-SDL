@@ -15,9 +15,13 @@
 
 #include <iostream>
 #include <vector>
+#include "SDL/SDL.h"
+#include "interpreter.h"
 
+class Interpreter;
 class Board {
     char **grid;
+    Interpreter *intrp;
 
     int width, height; 
     int numPlayers;
@@ -43,7 +47,7 @@ class Board {
 
         void printBoard();
 
-        Board(int numPlayers, int width, int height, int numToWin);
+        Board(int numPlayers, int width, int height, int numToWin, Interpreter *intrp);
         ~Board();
 
 };
