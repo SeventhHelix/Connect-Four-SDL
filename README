@@ -1,17 +1,17 @@
 To compile: 
     $ make
 
+To clean up files after compilation:
+    $ make clean
+
 You will need the SDL library to compile this program
 Instructions on how to get SDL can be found here: http://lazyfoo.net/SDL_tutorials/lesson01/index.php
 
-Accepted command flags:
-    -text       Run the game in a 'wonderfully aesthetically pleasing' text-only mode
-
 Controls:
-    Graphical version:
-        Left/Right          Move piece left and right
-        Spacebar            Drop piece
+    Left/Right          Move piece left and right
+    Spacebar/Down       Drop piece
 
-    Text version:
-        l/r                 Move piece left and right
-        d                   Drop piece
+Notes:
+    The most common grid size is 7 wide, 6 high, with 4 in a row to win. This program does support arbitrary sizes, however.
+    The window size will be scaled proportional to the width and height of the grid. Each piece is 64x64 px
+    Small grids may cause the ending graphic to be cut off or displayed funny.

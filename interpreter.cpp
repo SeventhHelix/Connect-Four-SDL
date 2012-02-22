@@ -72,8 +72,8 @@ void Interpreter::startGame() {
     bool quit = false;
     SDL_Event event;
 
-    while (quit == false ) {
-        if (SDL_PollEvent(&event) && game->canPlay() && ! gameWon) {
+    while (quit == false && game->canPlay() && ! gameWon) { 
+        if (SDL_PollEvent(&event)) {
             //std::cout << "event found: " << event.type << std::endl;
             switch(event.type) {
                 case SDL_QUIT:
@@ -100,12 +100,21 @@ void Interpreter::startGame() {
                     }
                     printGame();
             }
+        }
+    }
 
-        } else {
-            if (! appliedEndGame) {
-                endGameApply();
-                appliedEndGame = true;
+    while (quit == false) {
+
+        if (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
             }
+        }
+        
+        if (! appliedEndGame) {
+            std::cout << "applying end game" << std::endl;
+            endGameApply();
+            appliedEndGame = true;
         }
     }
 
@@ -263,4 +272,6 @@ void Interpreter::endGameApply() {
     }
 
     applySurface(1, 0, endGame, screen);
+
+    SDL_Flip(screen);
 }
