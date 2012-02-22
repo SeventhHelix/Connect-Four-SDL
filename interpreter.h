@@ -35,6 +35,7 @@ class Interpreter {
     SDL_Surface *greenCircleB;
     SDL_Surface *yellowCircleW;
     SDL_Surface *yellowCircleB;
+    SDL_Surface *endGame;
 
     public:
         void movePiece(char dir);
@@ -50,6 +51,7 @@ class Interpreter {
         SDL_Surface *loadImage(std::string filename);
         void applySurface(int x, int y, SDL_Surface *source, SDL_Surface *destination);
         void applyTile(char tile, int x, int y);
+        void endGameApply();
 
 };
 

@@ -68,6 +68,7 @@ Interpreter::Interpreter() {
 void Interpreter::startGame() {
     char exec;
     bool gameWon = false;
+    bool appliedEndGame = false;
     bool quit = false;
     SDL_Event event;
 
@@ -101,10 +102,9 @@ void Interpreter::startGame() {
             }
 
         } else {
-            if (gameWon == true) {
-
-            } else {
-
+            if (! appliedEndGame) {
+                endGameApply();
+                appliedEndGame = true;
             }
         }
     }
@@ -235,3 +235,32 @@ void Interpreter::applyTile(char tile, int xSmall, int ySmall) {
     }
 }
 
+/*
+ * Applies the endgame banner at the top according to the winning player
+ */
+void Interpreter::endGameApply() {
+    int winningPlayer = game->winningPlayer();
+
+    if (! game->wonGame()) {
+        endGame = SDL_LoadBMP("images/tieGame.bmp");
+    } else {
+        switch(winningPlayer) {
+            case 1:
+                endGame = SDL_LoadBMP("images/playerOneWin.bmp");
+                break;
+            case 2:
+                endGame = SDL_LoadBMP("images/playerTwoWin.bmp");
+                break;
+            case 3:
+                endGame = SDL_LoadBMP("images/playerThreeWin.bmp");
+                break;
+            case 4:
+                endGame = SDL_LoadBMP("images/playerFourWin.bmp");
+                break;
+            
+        }
+
+    }
+
+    applySurface(1, 0, endGame, screen);
+}
