@@ -102,9 +102,9 @@ void Interpreter::startGame() {
 
         } else {
             if (gameWon == true) {
-                SDL_WM_SetCaption("Connect-Four: Player " + game->winningPlayer + " won!", NULL);
+
             } else {
-                SDL_WM_SetCaption("Connect-Four: Tie game", NULL);
+
             }
         }
     }
