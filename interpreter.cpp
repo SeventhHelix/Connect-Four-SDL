@@ -87,7 +87,6 @@ void Interpreter::startGame() {
                 case SDL_KEYDOWN:
 
                     switch(event.key.keysym.sym) {
-                        J
                         case SDLK_LEFT:
                             game->movePiece(-1);
                             break;
