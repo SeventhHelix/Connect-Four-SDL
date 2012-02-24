@@ -10,7 +10,6 @@
  * =====================================================================================
  */
 
-//#include "piece.h"
 #include "board.h"
 #include <iostream>
 #include <cstdio>
@@ -173,6 +172,9 @@ bool Board::dropPiece() {
 
 }
 
+/*
+ * Iterates to the next player
+ */
 void Board::iteratePlayer() {
     if (curPlayer == numPlayers) curPlayer = 1;
     else curPlayer++;
@@ -184,7 +186,9 @@ void Board::iteratePlayer() {
 
 }
 
-
+/*
+ * Determines if the current player has just down the game
+ */
 bool Board::wonGame() {
     try {
         int inARow = 1;

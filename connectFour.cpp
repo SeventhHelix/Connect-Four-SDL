@@ -11,7 +11,6 @@
  */
 
 #include <iostream>
-//#include "piece.h"
 #include "board.h"
 #include "interpreter.h"
 #include "SDL/SDL.h"

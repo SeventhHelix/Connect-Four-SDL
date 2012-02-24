@@ -65,6 +65,9 @@ Interpreter::Interpreter() {
 
 
 
+/*
+ * Starts and runs the main game
+ */
 void Interpreter::startGame() {
     char exec;
     bool gameWon = false;
@@ -74,14 +77,17 @@ void Interpreter::startGame() {
 
     while (quit == false && game->canPlay() && ! gameWon) { 
         if (SDL_PollEvent(&event)) {
-            //std::cout << "event found: " << event.type << std::endl;
+
             switch(event.type) {
+
                 case SDL_QUIT:
-                    //std::cout << "event quit" << std::endl;
                     quit = true;
                     break;
+
                 case SDL_KEYDOWN:
+
                     switch(event.key.keysym.sym) {
+                        J
                         case SDLK_LEFT:
                             game->movePiece(-1);
                             break;
@@ -98,6 +104,7 @@ void Interpreter::startGame() {
                             }
                             break;
                     }
+
                     printGame();
             }
         }
@@ -117,27 +124,6 @@ void Interpreter::startGame() {
             appliedEndGame = true;
         }
     }
-
-    /*
-       std::cin >> exec;
-       switch(exec) {
-       case 'l':
-       game->movePiece(-1); break;
-       case 'r':
-       game->movePiece(1); break;
-       case 'd':
-       if (game->dropPiece()) {
-       if (game->wonGame()) gameWon = true;
-       else game->iteratePlayer();
-       }
-       break;
-       case 'q':
-       quit = true;
-       break;
-       }
-
-       printGame();
-       */
 
     if (gameWon == true) {
         std::cout << "Player " << game->winningPlayer() << " wins!" << std::endl;
